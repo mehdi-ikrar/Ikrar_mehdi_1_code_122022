@@ -10,16 +10,20 @@ if (produitLocalStorage == null) {
     //message si le panier est vide
     panierVide = document.getElementById('cartAndFormContainer').children[0].innerHTML = 'Votre Panier est vide';
 } else {
+    // Fonction fetchApi qui recupere les donné de l'api en focntion de l'id se trouvant sur local storage
     async function fetchApi() {
+      //recuperation du local storage
         const basketClassFull = JSON.parse(localStorage.getItem("product")) || [];
         
-
+        //boucle for pour recuperer la couleur et la quantité
         for (let g = 0; g < basketClassFull.length; g++) {
             try {
                 const response = await fetch(
+                  //recuperation dans l'api avec l'id du local storage
                     "http://localhost:3000/api/products/" + basketClassFull[g].id
                 );
                 const canap = await response.json();
+                //declaration d'un tableau pour recuperer la couleur et la quantité dans le local et le reste dans l'api en fonction de l'id ciblé
                 const article = {
                     _id: canap._id,
                     name: canap.name,
@@ -29,7 +33,7 @@ if (produitLocalStorage == null) {
                     alt: canap.altTxt,
                     img: canap.imageUrl,
                 };
-                
+                //je push le tableau pour pouvoir le reutiliser 
                 canapArray.push(article);
                 console.log(canapArray);
             } catch (err) {
@@ -39,11 +43,13 @@ if (produitLocalStorage == null) {
 
         return canapArray;
     }
-
+    //declaration de la fonction pour afficher les articles 
     async function showBasket() {
         const responseFetch = await fetchApi(); // Appel de la fonction FETCH et attente de sa réponse
+        //boucle pour afficher les produit en fonction du nombre d'artcile present 
         responseFetch.forEach((produit) => {
           console.log(produit);
+          //creation de la base dans le dom 
           let productArticle = document.createElement("article");
           document.querySelector("#cart__items").appendChild(productArticle);
           productArticle.className = "cart__item";

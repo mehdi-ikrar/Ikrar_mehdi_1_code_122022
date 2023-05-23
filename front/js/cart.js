@@ -7,6 +7,7 @@ const canapArray = [];
 
 // Fonction pour vérifier le local storage et implémenter les articles retournés
 if (produitLocalStorage == null) {
+    //message si le panier est vide
     panierVide = document.getElementById('cartAndFormContainer').children[0].innerHTML = 'Votre Panier est vide';
 } else {
     async function fetchApi() {
